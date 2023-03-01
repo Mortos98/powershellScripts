@@ -1,27 +1,21 @@
-#invoke a rest get request for the api create a get request to call https://dev.azure.com/TGAAU/_apis/projects/Aged Care Projects/teams?api-version=7.0
-#this will return a list of teams in the project\
+#take in params of OrganizationName, Project Name and PersonalAccessToken
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$OrganizationName,
+    [Parameter(Mandatory=$true)]
+    [string]$ProjectName,
+    [Parameter(Mandatory=$true)]
+    [string]$PersonalAccessToken
+)
 
-$PAT = "xxxxxxxxxxxxxxxxxxxx"
-$uri = "https://dev.azure.com/TGAAU/_apis/projects/Aged Care Projects/teams?api-version=7.0"
+# create a get request for https://dev.azure.com/TGAAU/_apis/projects/Aged Care Projects/teams?api-version=7.0 with PAT Token
+$uri = "https://dev.azure.com/$OrganizationName/_apis/projects/$ProjectName/teams?api-version=7.0"
+# escape the uri string
 $uri = [System.Uri]::EscapeUriString($uri)
-$uri = [System.Uri]::new($uri)
-$uri = $uri.AbsoluteUri
-$uri = [System.Uri]::new($uri)
+# encrypt a blank string and the  PersonalAccessToken with base 64
+$encodedCredentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes((":$PersonalAccessToken")))
 
-# take a PAT and encrypt it base 64 with UTF8
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(":$PAT"))
-$cred = New-Object System.Net.NetworkCredential("", $base64AuthInfo)
+#invoke the rest call
+$teams = Invoke-RestMethod -Uri $uri -Methon Get -ContentType "application/json; charset=utf-8; api-version=7.0" -Headers @{"Authorization"="Basic $encodedCredentials"}
 
-#creaete a get request to the uri with the cred object
-@body = @{
-    method = "GET"
-    uri = $uri
-    ContentType = "application/json"
-    UseDefaultCredentials = $false
-    Credential = $cred
-}
-
-#invode the get re quest and return the value of the teams
-$teams = Invoke-RestMethod @body -Credential $cred
-$teams.vlalue | select customDisplayName
-
+Write-Output $teams
