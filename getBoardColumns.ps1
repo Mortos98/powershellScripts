@@ -8,14 +8,20 @@ $uri = [System.Uri]::new($uri)
 $uri = $uri.AbsoluteUri
 $uri = [System.Uri]::new($uri)
 
-$cred = New-Object System.Management.Automation.PSCredential("PAT", (ConvertTo-SecureString $PAT -AsPlainText -Force))
-$body = @{
-    Method = 'Get'
-    Uri = $uri
-    ContentType = 'application/json'
+# take a PAT and encrypt it base 64 with UTF8
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(":$PAT"))
+$cred = New-Object System.Net.NetworkCredential("", $base64AuthInfo)
+
+#creaete a get request to the uri with the cred object
+@body = @{
+    method = "GET"
+    uri = $uri
+    ContentType = "application/json"
     UseDefaultCredentials = $false
     Credential = $cred
 }
-#list returned teams
+
+#invode the get re quest and return the value of the teams
 $teams = Invoke-RestMethod @body -Credential $cred
-$teams.value | select customDisplayName
+$teams.vlalue | select customDisplayName
+
