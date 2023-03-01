@@ -1,0 +1,21 @@
+#Azure devops Pipeline trigger master
+trigger:
+- master
+
+#Azure devops Pipeline variables AZURE_DEVOPS_PAT
+variables:
+  AZURE_DEVOPS_PAT: $(PAT)
+
+#pool ubunto-latest
+pool:
+  vmImage: 'ubuntu-latest'
+
+#steps
+steps:
+#task PowerShell@2 filepath PowerShellScripts/getBoardColumns.ps1
+- task: PowerShell@2
+  displayName: 'Get Board Columns'
+  inputs:
+    targetType: 'filePath'
+    filePath: 'PowerShellScripts/getBoardColumns.ps1'
+    arguments: '-OrganizationName $(OrganizationName) -ProjectName $(ProjectName) -BoardName $(BoardName) -PersonalAccessToken $(AZURE_DEVOPS_PAT)'

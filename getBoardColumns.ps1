@@ -1,5 +1,5 @@
 #invoke a rest get request for the api create a get request to call https://dev.azure.com/TGAAU/_apis/projects/Aged Care Projects/teams?api-version=7.0
-#this will return a list of teams in the project
+#this will return a list of teams in the project\
 
 $PAT = "xxxxxxxxxxxxxxxxxxxx"
 $uri = "https://dev.azure.com/TGAAU/_apis/projects/Aged Care Projects/teams?api-version=7.0"
