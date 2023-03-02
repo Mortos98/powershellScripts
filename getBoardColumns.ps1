@@ -25,9 +25,20 @@ foreach ($team in $teams.value) {
     $uriboards = [System.Uri]::EscapeUriString($uriboards)
     $boards = Invoke-RestMethod -Uri $uriboards -Method Get -ContentType "application/json; charset=utf-8; api-version=7.0" -Headers @{"Authorization"="Basic $encodedCredentials"}
 
+    foreach ($board in $boards.value) {
+        $boardId = $board.id
+        $boardName = $board.name
+        $boardObject = New-Object -TypeName PSObject -Property @{
+            BoardName = $boardName
+            BoardId = $boardId
+        }
+        $boardObject | Select-Object BoardName, BoardId
+    }
+
     $teamObject = New-Object -TypeName PSObject -Property @{
         TeamName = $teamName
         TeamId = $teamId
+        Boards = $boardObject
     }
     $teamObject | Select-Object TeamName, TeamId
 }
