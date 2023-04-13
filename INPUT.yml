@@ -1,0 +1,62 @@
+- Name: Example Team 1 Dev
+  Type: Delivery
+  BacklogLevels:
+    - Features
+    - Product Backlog Items
+- Name: Example Team 1
+  Type: Requirements
+  BacklogLevels:
+    - Epics
+    - Features
+- Name: Example Team 2
+  Type: Custom
+  Backlogs: 
+    - backlog level: feature
+      Columns:
+      - column type: incomming
+        column name: New
+        Work Items:
+          - Type: ART Feature
+            State: New
+          - Type: Feature
+            State: New
+      - column type: inProgress
+        column name: New
+        Work Items:
+          - Type: ART Feature
+            State: In Development
+          - Type: Feature
+            State: In Progress
+      - column type: outgoing
+        column name: Done
+        Work Items:
+          - Type: ART Feature
+            State: Done
+          - Type: Feature
+            State: Done
+    - backlog level: Epic
+      Columns:
+      - column type: incomming
+        column name: New
+        Work Items:
+          - Type: ART Feature
+            State: New
+          - Type: Feature
+            State: New
+      - column type: inProgress
+        column name: New
+        Work Items:
+          - Type: ART Feature
+            State: In Development
+          - Type: Feature
+            State: In Progress
+      - column type: outgoing
+        column name: Done
+        Work Items:
+          - Type: ART Feature
+            State: Done
+          - Type: Feature
+            State: Done
+  BacklogLevels:
+    - Epics
+    - Features
